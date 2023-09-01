@@ -27,11 +27,11 @@ jobs:
     name: Build and Test on Pull Request
     runs-on: ubuntu-latest
     steps:
-      - Build the Code
-      run |
-        echo "Starting Code Build"
-        sleep 5m
-        echo "Finish Code Build"
+      - name: Build the Code
+        run |
+          echo "Starting Code Build"
+          sleep 5m
+          echo "Finish Code Build"
 
   greet:
     strategy:

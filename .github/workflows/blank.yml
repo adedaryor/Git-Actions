@@ -7,7 +7,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "testConcurency" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,8 +18,20 @@ on:
         default: "world"
         required: true
 
+concurrency:
+  group: build and test
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  build-and-test-on-pr:
+    name: Build and Test on Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - Build the Code
+      run |
+        echo "Starting Code Build"
+        sleep 5m
+        echo "Finish Code Build"
 
   greet:
     strategy:
@@ -41,7 +53,7 @@ jobs:
           
 
   # This workflow contains a single job called "build"
-  Dev-build:
+  Dev build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: DEV
@@ -64,11 +76,11 @@ jobs:
           echo test, and deploy your project.
           echo "I am Runing a job in the Dev Env"
 
-  QA-build:
+  QA build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: QA
-    needs: Dev-build
+    needs: DEV build
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -88,11 +100,11 @@ jobs:
           echo test, and deploy your project.
           echo "I am Runing a job in the QA Env"
   
-  PROD-build:
+  PROD build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: PROD
-    needs: QA-build
+    needs: QA build
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
